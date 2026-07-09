@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+  <html lang="fr">
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculateur CEE multi-secteurs</title>
+  <style>
+    :root{--bleu:#2563eb;--bleu-fonce:#0f2352;--gris:#f4f6f9;--bord:#dbe2ea;}
+    *{box-sizing:border-box;}
+  body{font-family:Arial,Helvetica,sans-serif;margin:0;background:var(--gris);color:#1a2233;}
+  header{background:var(--bleu-fonce);color:#fff;padding:20px 30px;}
+    header h1{margin:0;font-size:22px;}
+  main{max-width:1100px;margin:0 auto;padding:20px;}
+  .card{background:#fff;border:1px solid var(--bord);border-radius:8px;padding:18px;margin-bottom:18px;}
+      select,input[type=text],input[type=number],input[type=date]{padding:8px;border:1px solid var(--bord);border-radius:5px;font-size:14px;width:100%;}
+  label{display:block;font-size:13px;font-weight:bold;margin:10px 0 4px;}
+  button{background:var(--bleu);color:#fff;border:none;padding:9px 16px;border-radius:5px;cursor:pointer;font-size:14px;}
+    button:hover{opacity:.9;}
+  button.secondaire{background:#fff;color:var(--bleu);border:1px solid var(--bleu);}
+    table{width:100%;border-collapse:collapse;margin-top:10px;}
+  th,td{padding:8px;border-bottom:1px solid var(--bord);text-align:left;font-size:13px;}
+  .liste-fiches{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+  .liste-fiches button{background:#eef2fb;color:var(--bleu-fonce);border:1px solid var(--bord);}
+      .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .badge{display:inline-block;background:#eef2fb;color:var(--bleu);padding:2px 8px;border-radius:10px;font-size:11px;margin-left:6px;}
+    .resultat{font-size:18px;font-weight:bold;color:var(--bleu-fonce);margin-top:10px;}
+  .note{font-size:12px;color:#65728a;}
+</style>
+  </head>
+  <body>
+  <header>
+    <h1>Calculateur CEE multi-secteurs</h1>
+    <div class="note" style="color:#c8d3e6">Generation de dossiers de demande de certificats d'economies d'energie</div>
+  </header>
+  <main>
+
+    <div class="card">
+      <label for="secteur">Secteur d'activite</label>
+      <select id="secteur">
+        <option value="">-- choisir un secteur --</option>
+        <option value="Agriculture">Agriculture</option>
+        <option value="Residentiel">Residentiel</option>
+        <option value="Tertiaire">Tertiaire</option>
+        <option value="Industrie">Industrie</option>
+        <option value="Reseau">Reseau</option>
+        <option value="Transport">Transport</option>
+      </select>
+      <div id="recommandations" class="liste-fiches"></div>
+
+      <label for="recherche">Rechercher une autre fiche (tous secteurs confondus)</label>
+    <input type="text" id="recherche" placeholder="Ex: BAT-TH-159 ou isolation combles">
+      <div id="resultatsRecherche" class="liste-fiches"></div>
+    </div>
+
+    <div class="card" id="ficheDetailCard" style="display:none">
+    <h2 id="ficheTitre"></h2>
+      <div class="note" id="ficheMeta"></div>
+      <div id="ficheInputs" class="grid2"></div>
+      <div class="resultat" id="ficheResultat"></div>
+      <button id="btnAjouter">Ajouter au dossier</button>
+    </div>
+
+  <div class="card">
+    <h2>Informations du dossier (identification du site)</h2>
+    <div class="grid2">
+            <div><label>Nom du beneficiaire</label><input type="text" id="infoNom"></div>
+      <div><label>Adresse du site</label><input type="text" id="infoAdresse"></div>
+      <div><label>Code postal</label><input type="text" id="infoCP"></div>
+            <div><label>Ville</label><input type="text" id="infoVille"></div>
+            <div><label>Date d'engagement</label><input type="date" id="infoDateEngagement"></div>
+      <div><label>Date de preuve de realisation</label><input type="date" id="infoDatePreuve"></div>
+      <div><label>Reference facture</label><input type="text" id="infoFacture"></div>
+    </div>
+        </div>
+
+        <div class="card">
+    <h2>Dossier en cours <span class="badge" id="nbFiches">0 fiche</span></h2>
+      <table>
+      <thead><tr><th>Code</th><th>Operation</th><th>Secteur</th><th>kWh cumac</th><th></th></tr></thead>
+        <tbody id="dossierBody"></tbody>
+      </table>
+      <div class="resultat" id="totalCumac"></div>
+      <button id="btnExporter" class="secondaire">Exporter le dossier CEE (Excel)</button>
+    </div>
+
+  </main>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script>window.FICHES = window.FICHES || {};</script>
+  <script src="fiches-agriculture.js"></script>
+  <script src="fiches-residentiel.js"></script>
+  <script src="fiches-tertiaire.js"></script>
+  <script src="fiches-industrie.js"></script>
+  <script src="fiches-reseau.js"></script>
+  <script src="fiches-transport.js"></script>
+  <script src="app.js"></script>
+  </body>
+  </html>

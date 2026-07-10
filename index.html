@@ -1,97 +1,162 @@
-<!DOCTYPE html> 
-  <html lang="fr">
-  <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calculateur CEE multi-secteurs</title>
-  <style>
-    :root{--bleu:#2563eb;--bleu-fonce:#0f2352;--gris:#f4f6f9;--bord:#dbe2ea;}
-    *{box-sizing:border-box;}
-  body{font-family:Arial,Helvetica,sans-serif;margin:0;background:var(--gris);color:#1a2233;}
-  header{background:var(--bleu-fonce);color:#fff;padding:20px 30px;}
-    header h1{margin:0;font-size:22px;}
-  main{max-width:1100px;margin:0 auto;padding:20px;}
-  .card{background:#fff;border:1px solid var(--bord);border-radius:8px;padding:18px;margin-bottom:18px;}
-      select,input[type=text],input[type=number],input[type=date]{padding:8px;border:1px solid var(--bord);border-radius:5px;font-size:14px;width:100%;}
-  label{display:block;font-size:13px;font-weight:bold;margin:10px 0 4px;}
-  button{background:var(--bleu);color:#fff;border:none;padding:9px 16px;border-radius:5px;cursor:pointer;font-size:14px;}
-    button:hover{opacity:.9;}
-  button.secondaire{background:#fff;color:var(--bleu);border:1px solid var(--bleu);}
-    table{width:100%;border-collapse:collapse;margin-top:10px;}
-  th,td{padding:8px;border-bottom:1px solid var(--bord);text-align:left;font-size:13px;}
-  .liste-fiches{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
-  .liste-fiches button{background:#eef2fb;color:var(--bleu-fonce);border:1px solid var(--bord);}
-      .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-  .badge{display:inline-block;background:#eef2fb;color:var(--bleu);padding:2px 8px;border-radius:10px;font-size:11px;margin-left:6px;}
-    .resultat{font-size:18px;font-weight:bold;color:var(--bleu-fonce);margin-top:10px;}
-  .note{font-size:12px;color:#65728a;}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculateur CEE multi-secteurs</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='23' fill='%230e2433'/%3E%3Cpath d='M33 9c1.5 12-3 22-14.5 26C14 26 19.5 13.5 33 9z' fill='%2334d399'/%3E%3Cpath d='M28.5 17l-8.5 12h5.5l-2.5 10 10-14h-6.5l2-8z' fill='%23fbbf24'/%3E%3C/svg%3E">
+<style>
+  :root{
+    --nuit:#0e2433;
+    --sapin:#0f3d33;
+    --emeraude:#059669;
+    --emeraude-f:#047857;
+    --emeraude-8:#065f46;
+    --menthe:#ecfdf5;
+    --menthe-2:#d1fae5;
+    --fond:#f3f7f5;
+    --bord:#dbe7e1;
+    --texte:#132a25;
+    --note:#5c6f68;
+    --ambre:#f59e0b;
+  }
+  *{box-sizing:border-box;}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;margin:0;background:var(--fond);color:var(--texte);}
+  header{background:linear-gradient(135deg,var(--nuit) 0%,var(--sapin) 45%,var(--emeraude-f) 100%);color:#fff;padding:20px 30px;display:flex;align-items:center;gap:15px;border-bottom:3px solid var(--ambre);}
+  header svg{flex:none;}
+  header h1{margin:0;font-size:20px;letter-spacing:.2px;}
+  header .sous-titre{font-size:12.5px;color:#bfe3d4;margin-top:3px;}
+  main{max-width:1100px;margin:0 auto;padding:22px 20px 8px;}
+  .card{background:#fff;border:1px solid var(--bord);border-radius:12px;padding:20px;margin-bottom:18px;box-shadow:0 2px 10px rgba(9,45,37,.05);}
+  .card h2{margin:0 0 12px;font-size:16px;color:var(--nuit);}
+  select,input[type=text],input[type=number],input[type=date]{padding:9px 11px;border:1px solid var(--bord);border-radius:8px;font-size:14px;width:100%;background:#fff;color:var(--texte);}
+  select:focus,input:focus{outline:2px solid var(--emeraude);outline-offset:-1px;border-color:var(--emeraude);}
+  label{display:block;font-size:12.5px;font-weight:650;color:#35544c;margin:12px 0 5px;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 16px;}
+  button{background:var(--emeraude);color:#fff;border:none;padding:10px 16px;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600;font-family:inherit;}
+  button:hover{background:var(--emeraude-f);}
+  button.secondaire{background:#fff;color:var(--emeraude-f);border:1px solid var(--emeraude);}
+  button.secondaire:hover{background:var(--menthe);}
+  button:disabled{opacity:.45;cursor:default;}
+  .liste-note{font-size:12.5px;color:var(--note);margin:14px 0 8px;}
+  .liste-fiches{display:flex;flex-wrap:wrap;gap:8px;}
+  .liste-fiches button{background:#fff;color:var(--sapin);border:1px solid var(--bord);border-radius:8px;padding:7px 11px;font-size:12.5px;font-weight:500;text-align:left;}
+  .liste-fiches button b{color:var(--emeraude-8);}
+  .liste-fiches button:hover{border-color:var(--emeraude);background:var(--menthe);}
+  .liste-fiches button.chip-active{border-color:var(--emeraude);background:var(--menthe-2);box-shadow:inset 0 0 0 1px var(--emeraude);}
+  .liste-fiches .tag-secteur{display:inline-block;background:var(--menthe);color:var(--emeraude-f);border-radius:6px;padding:1px 6px;font-size:10.5px;font-weight:700;margin-right:6px;vertical-align:1px;}
+  .badge{display:inline-block;background:var(--menthe);color:var(--emeraude-f);padding:3px 10px;border-radius:999px;font-size:11.5px;font-weight:700;margin-left:8px;vertical-align:2px;}
+  .code-pill{display:inline-block;background:var(--emeraude-8);color:#fff;border-radius:8px;padding:3px 10px;font-size:13px;font-weight:700;margin-right:9px;vertical-align:2px;}
+  #ficheMeta{margin-bottom:2px;}
+  .resultat-box{display:flex;align-items:baseline;gap:9px;background:var(--menthe);border:1px solid #b7e2cf;border-radius:10px;padding:13px 16px;margin:16px 0 14px;}
+  .resultat-box .valeur{font-size:23px;font-weight:750;color:var(--emeraude-8);font-variant-numeric:tabular-nums;}
+  .resultat-box .unite{font-size:13px;color:var(--emeraude-f);font-weight:650;}
+  .table-scroll{overflow-x:auto;}
+  table{width:100%;border-collapse:collapse;margin-top:6px;}
+  th,td{padding:9px 10px;border-bottom:1px solid var(--bord);text-align:left;font-size:13px;}
+  th{background:#eef7f2;color:var(--sapin);font-size:12px;text-transform:uppercase;letter-spacing:.4px;border-bottom:2px solid var(--emeraude);}
+  tbody tr:nth-child(even){background:#f7fbf9;}
+  tbody tr:hover{background:var(--menthe);}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;}
+  tfoot td{font-weight:750;border-top:2px solid var(--emeraude);border-bottom:none;background:var(--menthe);}
+  .btn-retirer{background:#fff;color:#b5462f;border:1px solid #ecc8c0;padding:5px 10px;border-radius:7px;font-size:12px;font-weight:600;}
+  .btn-retirer:hover{background:#fdf1ee;}
+  .vide td{color:var(--note);font-style:italic;text-align:center;padding:16px;}
+  .note{font-size:12px;color:var(--note);}
+  .barre-export{display:flex;align-items:center;gap:12px;margin-top:16px;flex-wrap:wrap;}
+  footer{text-align:center;padding:6px 20px 26px;font-size:12px;color:var(--note);}
+  @media (max-width:640px){
+    header{padding:16px 18px;}
+    main{padding:14px 12px 4px;}
+    .grid2{grid-template-columns:1fr;}
+    .card{padding:16px;}
+  }
 </style>
-  </head>
-  <body>
-  <header>
+</head>
+<body>
+<header>
+  <svg width="42" height="42" viewBox="0 0 48 48" aria-hidden="true">
+    <circle cx="24" cy="24" r="22.5" fill="rgba(255,255,255,.07)" stroke="rgba(255,255,255,.4)" stroke-width="1.5"/>
+    <path d="M33 9c1.5 12-3 22-14.5 26C14 26 19.5 13.5 33 9z" fill="#34d399"/>
+    <path d="M28.5 17l-8.5 12h5.5l-2.5 10 10-14h-6.5l2-8z" fill="#fbbf24"/>
+  </svg>
+  <div>
     <h1>Calculateur CEE multi-secteurs</h1>
-    <div class="note" style="color:#c8d3e6">Generation de dossiers de demande de certificats d'economies d'energie</div>
-  </header>
-  <main>
+    <div class="sous-titre">Génération de dossiers de demande de certificats d'économies d'énergie</div>
+  </div>
+</header>
+<main>
 
-    <div class="card">
-      <label for="secteur">Secteur d'activite</label>
-      <select id="secteur">
-        <option value="">-- choisir un secteur --</option>
-        <option value="Agriculture">Agriculture</option>
-        <option value="Residentiel">Residentiel</option>
-        <option value="Tertiaire">Tertiaire</option>
-        <option value="Industrie">Industrie</option>
-        <option value="Reseau">Reseau</option>
-        <option value="Transport">Transport</option>
-      </select>
-      <div id="recommandations" class="liste-fiches"></div>
-
-      <label for="recherche">Rechercher une autre fiche (tous secteurs confondus)</label>
-    <input type="text" id="recherche" placeholder="Ex: BAT-TH-159 ou isolation combles">
-      <div id="resultatsRecherche" class="liste-fiches"></div>
+  <div class="card">
+    <h2>Choisir une opération</h2>
+    <div class="grid2">
+      <div>
+        <label for="secteur">Secteur d'activité</label>
+        <select id="secteur">
+          <option value="">— choisir un secteur —</option>
+          <option value="Agriculture">Agriculture</option>
+          <option value="Residentiel">Résidentiel</option>
+          <option value="Tertiaire">Tertiaire</option>
+          <option value="Industrie">Industrie</option>
+          <option value="Reseau">Réseau</option>
+          <option value="Transport">Transport</option>
+        </select>
+      </div>
+      <div>
+        <label for="recherche">Rechercher une fiche (tous secteurs confondus)</label>
+        <input type="text" id="recherche" placeholder="Ex : BAT-TH-159 ou isolation combles">
+      </div>
     </div>
+    <div class="liste-note" id="listeNote">Choisis un secteur ou tape une recherche pour afficher les fiches.</div>
+    <div id="listeFiches" class="liste-fiches"></div>
+  </div>
 
-    <div class="card" id="ficheDetailCard" style="display:none">
+  <div class="card" id="ficheDetailCard" style="display:none">
     <h2 id="ficheTitre"></h2>
-      <div class="note" id="ficheMeta"></div>
-      <div id="ficheInputs" class="grid2"></div>
-      <div class="resultat" id="ficheResultat"></div>
-      <button id="btnAjouter">Ajouter au dossier</button>
-    </div>
+    <div class="note" id="ficheMeta"></div>
+    <div id="ficheInputs" class="grid2"></div>
+    <div class="resultat-box"><span class="valeur" id="ficheResultat">0</span><span class="unite">kWh cumac</span></div>
+    <button id="btnAjouter">+ Ajouter au dossier</button>
+  </div>
 
   <div class="card">
     <h2>Informations du dossier (identification du site)</h2>
     <div class="grid2">
-            <div><label>Nom du beneficiaire</label><input type="text" id="infoNom"></div>
-      <div><label>Adresse du site</label><input type="text" id="infoAdresse"></div>
-      <div><label>Code postal</label><input type="text" id="infoCP"></div>
-            <div><label>Ville</label><input type="text" id="infoVille"></div>
-            <div><label>Date d'engagement</label><input type="date" id="infoDateEngagement"></div>
-      <div><label>Date de preuve de realisation</label><input type="date" id="infoDatePreuve"></div>
-      <div><label>Reference facture</label><input type="text" id="infoFacture"></div>
+      <div><label for="infoNom">Nom du bénéficiaire</label><input type="text" id="infoNom"></div>
+      <div><label for="infoAdresse">Adresse du site</label><input type="text" id="infoAdresse"></div>
+      <div><label for="infoCP">Code postal</label><input type="text" id="infoCP"></div>
+      <div><label for="infoVille">Ville</label><input type="text" id="infoVille"></div>
+      <div><label for="infoDateEngagement">Date d'engagement</label><input type="date" id="infoDateEngagement"></div>
+      <div><label for="infoDatePreuve">Date de preuve de réalisation</label><input type="date" id="infoDatePreuve"></div>
+      <div><label for="infoFacture">Référence facture</label><input type="text" id="infoFacture"></div>
     </div>
-        </div>
+  </div>
 
-        <div class="card">
+  <div class="card">
     <h2>Dossier en cours <span class="badge" id="nbFiches">0 fiche</span></h2>
+    <div class="table-scroll">
       <table>
-      <thead><tr><th>Code</th><th>Operation</th><th>Secteur</th><th>kWh cumac</th><th></th></tr></thead>
+        <thead><tr><th>Code</th><th>Opération</th><th>Secteur</th><th class="num">kWh cumac</th><th></th></tr></thead>
         <tbody id="dossierBody"></tbody>
+        <tfoot id="dossierFoot"></tfoot>
       </table>
-      <div class="resultat" id="totalCumac"></div>
-      <button id="btnExporter" class="secondaire">Exporter le dossier CEE (Excel)</button>
     </div>
+    <div class="barre-export">
+      <button id="btnExporter">⬇ Exporter le dossier CEE (Excel)</button>
+      <span class="note">Fichier .xlsx mis en forme : récapitulatif + une feuille d'archivage par fiche.</span>
+    </div>
+  </div>
 
-  </main>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-  <script>window.FICHES = window.FICHES || {};</script>
-  <script src="fiches-agriculture.js?v=3"></script>
-  <script src="fiches-residentiel.js?v=3"></script>
-  <script src="fiches-tertiaire.js?v=4"></script>
-  <script src="fiches-industrie.js?v=4"></script>
-  <script src="fiches-reseau.js?v=4"></script>
-  <script src="fiches-transport.js?v=4"></script>
-  <script src="app.js?v=3"></script>
-  </body>
-  </html>
+</main>
+<footer>Calculateur CEE multi-secteurs — outil d'estimation interne : montants en kWh cumac à vérifier sur les fiches d'opérations standardisées en vigueur avant dépôt.</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js"></script>
+<script>window.FICHES = window.FICHES || {};</script>
+<script src="fiches-agriculture.js?v=3"></script>
+<script src="fiches-residentiel.js?v=3"></script>
+<script src="fiches-tertiaire.js?v=4"></script>
+<script src="fiches-industrie.js?v=4"></script>
+<script src="fiches-reseau.js?v=4"></script>
+<script src="fiches-transport.js?v=4"></script>
+<script src="app.js?v=4"></script>
+</body>
+</html>
